@@ -8,9 +8,9 @@ const DashLaout = ({
     children
 }:mainProps) => {
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex w-full h-full space-x-2">
             <Sidebar/>
-            <main className="flex w-full h-full">{children}</main>
+            <main className="flex  w-full h-full">{children}</main>
             </div>
       );
 }
