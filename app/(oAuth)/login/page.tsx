@@ -5,12 +5,10 @@ import { FcGoogle } from "react-icons/fc";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 
 const LoginPage = () => {
-    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
   
  
