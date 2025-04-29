@@ -9,7 +9,7 @@ const DashLaout =  ({ children }: mainProps) => {
   return (
     <div className="flex w-full h-full space-x-2 fixed">
       <Sidebar />      
-      <main className="flex  w-full h-full bg-secondary">{children}</main>
+      <main className="flex  w-full h-full ">{children}</main>
     </div>
   );
 };
