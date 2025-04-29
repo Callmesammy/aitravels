@@ -23,6 +23,7 @@ const LoginPage = () => {
               })
               if(data){
                 console.log(data)
+            
             }else{
                 console.log("something went wrong", error)
             }

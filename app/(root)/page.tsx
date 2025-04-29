@@ -1,10 +1,11 @@
 "use client"
 import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { MdOutlineWavingHand } from "react-icons/md";
 
-export default function Home() {
-
+const Home = () =>{
+const [use, setUse] = useState()
   useEffect(()=>{
     loginData()
   },[])
@@ -13,10 +14,18 @@ export default function Home() {
     const { data: { user }, } = await supabase.auth.getUser()
           if(!user){
             redirect("/login")
-  }}
+           }else{
+            setUse(user.user_metadata.full_name)
+           }
+
+}
   return (
-    <div className="flex h-full w-full">
-      welcome 
+    <div className="flex h-full w-full px-2 pt-2 flex-col relative">
+       <h1 className="text-md font-semibold flex items-center gap-1 capitalize">Welcome {use} <MdOutlineWavingHand />
+       </h1> 
+     
     </div>
   );
 }
+
+export default Home;
