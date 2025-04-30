@@ -61,7 +61,7 @@ const Trip = () => {
             <p className="text-muted-foreground text-sm">View and Generate AI travel plans </p>
         </div>
 
-        <div className="w-full bg-secondary h-full rounded-md pt-4">  
+        <div className="w-full bg-secondary h-full rounded-md pt-4 overflow-auto pb-3">  
         <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 justify-center flex flex-col  mt-3 lg:mx-[10rem]">
       <FormField
