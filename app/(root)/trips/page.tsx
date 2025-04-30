@@ -21,6 +21,22 @@ const formSchema = z.object({
   country: z.string({
     required_error: "A country must be selected "
   }),
+  duration: z.coerce.number({
+    required_error: "Enter number of days to stay"
+  }), 
+  travel: z.string({
+    required_error: "select group type"
+  }),
+  group: z.string({
+    required_error: "select group type"
+  }),
+  interest: z.string({
+    required_error: "select group type"
+  }),
+  budget: z.string({
+    required_error: "select group type"
+  }),
+
 })
 
 
@@ -45,9 +61,9 @@ const Trip = () => {
             <p className="text-muted-foreground text-sm">View and Generate AI travel plans </p>
         </div>
 
-        <div className="w-full bg-red-500 h-full">  
+        <div className="w-full bg-secondary h-full rounded-md pt-4">  
         <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 justify-center flex flex-col  mt-3 lg:mx-[10rem]">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 justify-center flex flex-col  mt-3 lg:mx-[10rem]">
       <FormField
           control={form.control}
           name="country"
@@ -73,7 +89,7 @@ const Trip = () => {
             <FormItem>
               <FormLabel>Duration</FormLabel>
               <FormControl>
-                <Input placeholder="Enter number of days (e.g. 5,12)" {...field} />
+                <Input type="number" placeholder="Enter number of days (e.g. 5,12)" {...field} />
               </FormControl>
              
               <FormMessage />
@@ -170,7 +186,7 @@ const Trip = () => {
             </FormItem>
           )}
         />
-        <Button type="submit"> <RiGeminiLine />  Generate trip</Button>
+        <Button type="submit" className="bg-sky-950 cursor-pointer"> <RiGeminiLine />  Generate trip</Button>
       </form>
     </Form>
     </div>
