@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { MdOutlineWavingHand } from "react-icons/md";
 import { addItems, addtravels } from "./_components";
 import Image from "next/image";
+import Link from "next/link";
 
 const Home = () =>{
 const [use, setUse] = useState()
@@ -48,7 +49,7 @@ const [use, setUse] = useState()
           {addtravels.map((addT)=>{
 
             return(
-            <div key={addT.id} className="border flex flex-col rounded-md w-full h-[16rem]">
+            <Link href={`/trips/${addT.id}`} key={addT.id} className="border hover:scale-105 flex flex-col rounded-md w-full h-[16rem]">
               <div className="w-full h-[10rem] border rounded-t-md relative">
                 <Image src={addT.img} alt="image" fill className="object-fill rounded-t-md"/>
                 <div className="rounded end-2 mt-2 absolute px-3  bg-white text-black text-center text-sm items-center flex font-semibold">$ {addT.amount}</div>
@@ -64,7 +65,7 @@ const [use, setUse] = useState()
                 </span>
                </span>
 
-            </div>  
+            </Link>  
             )
           }
             
