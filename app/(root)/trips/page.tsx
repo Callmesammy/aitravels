@@ -1,7 +1,7 @@
 const Trips = () => {
     return ( 
         <div>
-            Trips 
+            hjhj
         </div>
      );
 }
