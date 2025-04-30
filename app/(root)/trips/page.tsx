@@ -1,11 +1,180 @@
+"use client"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { CountryDropdown } from "@/components/ui/country-dropdown"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { RiGeminiLine } from "react-icons/ri";
+
+
+const formSchema = z.object({
+  country: z.string({
+    required_error: "A country must be selected "
+  }),
+})
+
+
 const Trip = () => {
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+        },
+      })
+
+      function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        console.log(values)
+      }
+    
     return ( 
         <div className="flex px-2 pt-2 h-full w-full flex-col">
-        <div className="flex flex-col w-full h-full ">
+        <div className="flex flex-col w-full  ">
             <h1 className="font-semibold">Add New Trips</h1>
             <p className="text-muted-foreground text-sm">View and Generate AI travel plans </p>
         </div>
-        Trip</div>
+
+        <div className="w-full bg-red-500 h-full">  
+        <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 justify-center flex flex-col  mt-3 lg:mx-[10rem]">
+      <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Country</FormLabel>
+              <CountryDropdown
+                placeholder="Country"
+                defaultValue={field.value}
+                onChange={(country) => {
+                  field.onChange(country.alpha3);
+                }}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+<FormField
+          control={form.control}
+          name="duration"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Duration</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter number of days (e.g. 5,12)" {...field} />
+              </FormControl>
+             
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+<FormField
+          control={form.control}
+          name="group"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Group Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl className="w-full">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select group type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="m@example.com">m@example.com</SelectItem>
+                  <SelectItem value="m@google.com">m@google.com</SelectItem>
+                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+   <FormField
+          control={form.control}
+          name="travel"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Travel Style</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl className="w-full">
+              <SelectTrigger>
+                    <SelectValue placeholder="Select your travel style " />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="m@example.com">m@example.com</SelectItem>
+                  <SelectItem value="m@google.com">m@google.com</SelectItem>
+                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+           <FormField
+          control={form.control}
+          name="interest"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Interest</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl className="w-full">
+              <SelectTrigger>
+                    <SelectValue placeholder="Select your travel style" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="m@example.com">m@example.com</SelectItem>
+                  <SelectItem value="m@google.com">m@google.com</SelectItem>
+                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+           <FormField
+          control={form.control}
+          name="budget"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Budget Estimate</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl className="w-full">
+              <SelectTrigger>
+                    <SelectValue placeholder="Select your budget preference" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="m@example.com">m@example.com</SelectItem>
+                  <SelectItem value="m@google.com">m@google.com</SelectItem>
+                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit"> <RiGeminiLine />  Generate trip</Button>
+      </form>
+    </Form>
+    </div>
+        </div>
      );
 }
  
