@@ -15,9 +15,11 @@ import { CountryDropdown } from "@/components/ui/country-dropdown"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { RiGeminiLine } from "react-icons/ri";
+import { createClient } from "@/utils/supabase/client"
+import { action } from "../api/create-trips"
 
 
-const formSchema = z.object({
+export const formSchema = z.object({
   country: z.string({
     required_error: "A country must be selected "
   }),
@@ -48,20 +50,36 @@ const Trip = () => {
         },
       })
 
-      function onSubmit(values: z.infer<typeof formSchema>) {
+      async function onSubmit(values: z.infer<typeof formSchema>) {
+        
+        try{        
+          const response = await action(values); // Call server action
+            console.log(response)
+
+
+        const supabase = await createClient()
+        const { data, error } = await supabase.from("aitravel").insert(values)
+        if(data){
+          console.log(data)
+        }else{
+          console.log("something went wrong", error)
+        }
+        }catch(error){
+          console.log(error)
+        }
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         console.log(values)
       }
     
     return ( 
-        <div className="flex px-2 pt-2 h-full w-full flex-col">
+        <div className="flex px-2 pt-2 h-full w-full flex-col ">
         <div className="flex flex-col w-full  ">
             <h1 className="font-semibold">Add New Trips</h1>
             <p className="text-muted-foreground text-sm">View and Generate AI travel plans </p>
         </div>
 
-        <div className="w-full bg-secondary h-full rounded-md pt-4 overflow-auto pb-3">  
+        <div className="w-full bg-secondary h-full rounded-md pt-4 overflow-auto pb-3 px-3">  
         <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 justify-center flex flex-col  mt-3 lg:mx-[10rem]">
       <FormField
@@ -69,12 +87,12 @@ const Trip = () => {
           name="country"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Country</FormLabel>
-              <CountryDropdown
-                placeholder="Country"
+              <FormLabel>Select Country</FormLabel>
+              <CountryDropdown 
+                placeholder="Select Country"
                 defaultValue={field.value}
                 onChange={(country) => {
-                  field.onChange(country.alpha3);
+                  field.onChange(country.alpha3); 
                 }}
               />
               <FormMessage />
@@ -88,7 +106,7 @@ const Trip = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Duration</FormLabel>
-              <FormControl>
+              <FormControl >
                 <Input type="number" placeholder="Enter number of days (e.g. 5,12)" {...field} />
               </FormControl>
              
@@ -110,9 +128,12 @@ const Trip = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  <SelectItem value="solo">solo</SelectItem>
+                  <SelectItem value="couple">Couple</SelectItem>
+                  <SelectItem value="family">Family</SelectItem>
+                  <SelectItem value="friends">Friends</SelectItem>
+                  <SelectItem value="business">Business</SelectItem>
+
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -132,9 +153,12 @@ const Trip = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  <SelectItem value="relaxedm">Relaxed</SelectItem>
+                  <SelectItem value="luxury">Luxury</SelectItem>
+                  <SelectItem value="adventure">Adventure</SelectItem>
+                  <SelectItem value="cultural">Cultural</SelectItem>
+                  <SelectItem value="exploration">City Exploration</SelectItem>
+
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -154,9 +178,16 @@ const Trip = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  <SelectItem value="food_culture">Food & Culture</SelectItem>
+                  <SelectItem value="sites">Historical Sites</SelectItem>
+                  <SelectItem value="hiking">Hiking & Nature walks</SelectItem>
+                  <SelectItem value="beach">Beaches & Water Activities</SelectItem>
+                  <SelectItem value="museums">Museums & Art</SelectItem>
+                  <SelectItem value="night_life">Night Life</SelectItem>
+                  <SelectItem value="shopping">Shopping</SelectItem>
+                  <SelectItem value="photography">Photography Spots</SelectItem>
+
+
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -176,9 +207,9 @@ const Trip = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  <SelectItem value="mid">Mid-range</SelectItem>
+                  <SelectItem value="luxury">Luxury</SelectItem>
+                  <SelectItem value="premium">Premium</SelectItem>
                 </SelectContent>
               </Select>
               
