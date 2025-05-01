@@ -38,35 +38,31 @@ export const action = async (formdata: z.infer<typeof formSchema>) => {
           "Day 2": "Activity 2"
         }
       }
-    `;
-
+    `; 
 
     const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash", 
-        contents: prompt
+      model: "gemini-2.0-flash", 
+      contents: prompt
     })
 
     const reText = response.candidates?.[0]
-    const rwText = reText?.content?.parts?.[0].text || ""
+    const fwText = reText?.content?.parts?.[0].text || ""
 
-    const mainText = rwText.replace(/```json|```/g, "").trim()
+    const rwText = fwText.replace(/```json|```/g, "").trim()
 
     let json
     try{
-json = JSON.parse(mainText)
+      json = JSON.parse(rwText)
     }catch(err){
-        console.error("something went wrong", err)
-        console.log("try again", rwText)
-        return;
+      console.error("something went wrong", err)
+      console.log("Germini Api Error", fwText)
     }
 
-
-
-    // 🖼️ Unsplash fetch
-    const unsplashUrl = `https://api.unsplash.com/search/photos?query=${data.country}+${data.interest}+${data.travel}&client_id=${unsplashKey}`;
-    const imgRes = await fetch(unsplashUrl);
-    const imgData = await imgRes.json();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// 🖼️ Unsplash fetch
+const unsplashUrl = `https://api.unsplash.com/search/photos?query=${data.country}+${data.interest}+${data.travel}&client_id=${unsplashKey}`;
+const imgRes = await fetch(unsplashUrl);
+const imgData = await imgRes.json();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const image = imgData.results?.slice(0, 3).map((img: any)=> img.urls?.regular) || [];
 
     return {

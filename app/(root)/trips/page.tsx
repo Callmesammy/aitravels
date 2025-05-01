@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input"
 import { RiGeminiLine } from "react-icons/ri";
 import { createClient } from "@/utils/supabase/client"
 import { action } from "../api/create-trips"
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
 
 
 export const formSchema = z.object({
@@ -43,6 +45,7 @@ export const formSchema = z.object({
 
 
 const Trip = () => {
+  const [isLoading, setIsLoading]= useState(false)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -51,6 +54,7 @@ const Trip = () => {
       })
 
       async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
         
         try{        
           const response = await action(values); // Call server action
@@ -66,6 +70,8 @@ const Trip = () => {
         }
         }catch(error){
           console.log(error)
+        }finally{
+          setIsLoading(false)
         }
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
@@ -217,7 +223,7 @@ const Trip = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-sky-950 cursor-pointer"> <RiGeminiLine />  Generate trip</Button>
+        <Button disabled={isLoading} type="submit" className="bg-sky-950 cursor-pointer"> <RiGeminiLine />  Generate trip {isLoading && <Loader2 className="animate-spin"/>}</Button>
       </form>
     </Form>
     </div>
