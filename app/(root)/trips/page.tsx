@@ -15,10 +15,10 @@ import { CountryDropdown } from "@/components/ui/country-dropdown"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { RiGeminiLine } from "react-icons/ri";
-import { createClient } from "@/utils/supabase/client"
-import { action } from "../api/create-trips"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
+import {  useRouter } from "next/navigation"
+import { action } from "../api/create-trips"
 
 
 export const formSchema = z.object({
@@ -40,13 +40,13 @@ export const formSchema = z.object({
   budget: z.string({
     required_error: "select group type"
   }),
-
+ 
 })
 
 
 const Trip = () => {
   const [isLoading, setIsLoading]= useState(false)
-
+  const router = useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -54,25 +54,21 @@ const Trip = () => {
       })
 
       async function onSubmit(values: z.infer<typeof formSchema>) {
+
         setIsLoading(true)
-        
+        let trip
         try{        
-          const response = await action(values); // Call server action
-            console.log(response)
-
-
-        const supabase = await createClient()
-        const { data, error } = await supabase.from("aitravel").insert(values)
-        if(data){
-          console.log(data)
-        }else{
-          console.log("something went wrong", error)
-        }
+           trip = await action(values)
+            if (trip?.id){
+              
+            }
         }catch(error){
           console.log(error)
         }finally{
           setIsLoading(false)
         }
+        router.push(`/trips/${String(trip.id)}`)
+              router.refresh()
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         console.log(values)

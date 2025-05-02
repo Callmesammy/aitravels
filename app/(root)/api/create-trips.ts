@@ -1,32 +1,42 @@
+"use server"
 import { z } from "zod";
 import { formSchema } from "../trips/page";
 import { GoogleGenAI } from "@google/genai";
+import { createClient } from "@/utils/supabase/server";
 
 export const action = async (formdata: z.infer<typeof formSchema>) => {
-  const data = formSchema.parse(formdata);
+  const dat = {
+    country: formdata.country,
+    duration:  formdata.duration,
+    travel:  formdata.travel,
+    group:  formdata.group,
+    interest:  formdata.interest,
+    budget:  formdata.budget,
+  }
   const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GERMINI_API_KEY! });
 
   const unsplashKey = process.env.NEXT_PUBLIC_UPSPLASH_API!;
 
   try {
     const prompt = `
-      Generate a ${data.duration}-day itinerary for ${data.country} based on:
-      Budget: ${data.budget}
-      Travel: ${data.travel}
-      Group: ${data.group}
-      Interest: ${data.interest}
+      Generate a ${dat.duration}-day itinerary for ${dat.country} based on:
+      Budget: ${dat.budget}
+      Travel: ${dat.travel}
+      Group: ${dat.group}
+      Interest: ${dat.interest}
+      
 
       Return structured JSON like:
       {
         "name": "Trip Title",
         "description": "Trip summary",
         "estimatedPrice": "USD price",
-        "duration": "${data.duration}",
-        "budget": "${data.budget}",
-        "country": "${data.country}",
-        "group": "${data.group}",
-        "interest": "${data.interest}",
-        "travel": "${data.travel}",
+        "duration": "${dat.duration}",
+        "budget": "${dat.budget}",
+        "country": "${dat.country}",
+        "group": "${dat.group}",
+        "interest": "${dat.interest}",
+        "travel": "${dat.travel}",
         "bestTimeToVisit": [...],
         "location": {
           "city": "...",
@@ -59,18 +69,27 @@ export const action = async (formdata: z.infer<typeof formSchema>) => {
     }
 
 // 🖼️ Unsplash fetch
-const unsplashUrl = `https://api.unsplash.com/search/photos?query=${data.country}+${data.interest}+${data.travel}&client_id=${unsplashKey}`;
+const unsplashUrl = `https://api.unsplash.com/search/photos?query=${dat.country}+${dat.interest}+${dat.travel}&client_id=${unsplashKey}`;
 const imgRes = await fetch(unsplashUrl);
 const imgData = await imgRes.json();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const image = imgData.results?.slice(0, 3).map((img: any)=> img.urls?.regular) || [];
 
+    const supabase = await createClient(); 
+    const {data, error} = await supabase.from("upload").insert({
+      taskDetails: json, 
+      imagUrl: image
+    }).select("id").single()
+    if(data){
+      console.log(data)
+    }else{
+      console.error("something went wrong", error)
+    }
     return {
       ...json,
       image,
+      id: data?.id
     };
-
-    
   } catch (error) {
     console.error("AI itinerary error:", error);
     return null;
