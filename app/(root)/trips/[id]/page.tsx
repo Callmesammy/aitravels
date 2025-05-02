@@ -9,7 +9,7 @@ interface details {
       name: string,
       estimatedPrice: string,
       duration: number, 
-      budget: string
+      budget: string,
 
   }
 }
@@ -51,7 +51,9 @@ const TripDetailsPage = ({ params }: { params: { id: string } }) => {
     <div>
       {listing?.map((doc)=>(
         <div key={doc.id} className="font-bold text-black text-2xl">
-          {doc.taskDetails.name}
+            {doc.taskDetails.name}
+            {doc.taskDetails.estimatedPrice}
+
         </div>
       ))}
     </div>
