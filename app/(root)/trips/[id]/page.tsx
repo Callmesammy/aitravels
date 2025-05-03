@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { createClient } from "@/utils/supabase/client";
@@ -5,8 +6,17 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
-
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+ 
 interface taskList{
+  imagUrl: string[],
   taskDetails:{
       name: string, 
       description: string, 
@@ -40,6 +50,7 @@ console.log(params)
   
     runFile();
  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const itemsList = async () => {
@@ -47,12 +58,17 @@ console.log(params)
     const { data, error } = await supabase.from("upload").select("*").eq("user_id", params.id);
   
     if (data) {
+     
       const parsedData = data.map((doc) => ({
         ...doc,
         taskDetails:
           typeof doc.taskDetails === "string"
             ? JSON.parse(doc.taskDetails)
             : doc.taskDetails,
+            imagUrl: 
+            typeof doc.imagUrl === "string"
+            ? JSON.parse(doc.imagUrl || "[]")
+            : doc.imagUrl
       }));
   
       setIslisting(parsedData as taskList[]);
@@ -62,19 +78,34 @@ console.log(params)
   };
   return ( 
 
-    <div className="px-2 py-2 flex w-full h-full  flex-col">
+    <div className="px-2 py-2 flex w-full h-full  flex-col overflow-auto">
       <h1 className="text-md font-semibold">Tasks</h1>
       <p className="text-sm text-muted-foreground">View and edit Ai-generated travel Plans</p>
       <div className="w-full h-full pt-5  flex  items-center">
         {listings?.map((fl)=>(
-          <div key={fl.id} className=" w-full px-3 flex flex-col h-full justify-center">
+          <div key={fl.id} className=" w-full px-3 flex flex-col h-full items-center justify-center">
              <h1 className="font-bold text-lg">{fl.taskDetails.name}  </h1>            
             
-            <div className="w-full text-sm space-x-5 text-muted-foreground pt-3 flex items-center gap-2">
-           <span className="flex">  <FaRegCalendarAlt/> {fl.taskDetails.duration} day plan</span>  
-           <span className="flex">  <FiMapPin />           {fl.taskDetails.location.city} </span>  
+            <div className=" text-sm text-center w-full  text-muted-foreground justify-center pt-3 flex items-center ">
+           <span className="flex items-center gap-2 w-42 ">  <FaRegCalendarAlt/> {fl.taskDetails.duration} day plan</span>  
+           <span className="flex tems-center gap-2 ">  <FiMapPin /> {fl.taskDetails.location.city} </span>  
 
             </div>
+            <div className="w-[] h-[30rem] gap-2  flex ">
+            <Carousel className="w-xl items-center flex justify-center">
+      <CarouselContent>
+        {fl.imagUrl.map((doc: string, flx: number)=>(
+
+          <CarouselItem key={doc}>
+           <><img key={flx} src={doc} alt="doc" className=" w-full h-[29rem] flex rounded-md" /></>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+          </div>
+          <div> another segment</div>
           </div>
           
         ))}
