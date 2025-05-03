@@ -30,7 +30,7 @@ export const action = async (formdata: z.infer<typeof formSchema>) => {
       {
         "name": "Trip Title",
         "description": "Trip summary",
-        "estimatedPrice": "USD price",
+        "estimatedPrice": "NGN price",
         "duration": "${dat.duration}",
         "budget": "${dat.budget}",
         "country": "${dat.country}",
@@ -79,7 +79,7 @@ const imgData = await imgRes.json();
     const {data, error} = await supabase.from("upload").insert({
       taskDetails: json, 
       imagUrl: image
-    }).select("id").single()
+    }).select("user_id").single()
     if(data){
       console.log(data)
     }else{
@@ -88,7 +88,7 @@ const imgData = await imgRes.json();
     return {
       ...json,
       image,
-      id: data?.id
+      id: data?.user_id
     };
   } catch (error) {
     console.error("AI itinerary error:", error);

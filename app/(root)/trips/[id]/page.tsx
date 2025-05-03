@@ -1,32 +1,51 @@
 "use client"
 
 import { createClient } from "@/utils/supabase/client";
+import React from "react";
 import { useEffect, useState } from "react";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { FiMapPin } from "react-icons/fi";
 
-interface details {
-  id: number,
-  taskDetails: {
-      name: string,
-      estimatedPrice: string,
-      duration: number, 
-      budget: string,
-
+interface taskList{
+  taskDetails:{
+      name: string, 
+      description: string, 
+      estimatedPrice: string, 
+      duration: number 
+    location:{
+      city: string,
+    }
   }
+  id: number,
+  user_id: string
+
 }
-
-
-const TripDetailsPage = ({ params }: { params: { id: string } }) => {
-
-  const [listing, Setlisting] = useState<details[]>()
-
+const Taski = ({params}: {params: {id: string}}) => {
+console.log(params)
+  const [listings, setIslisting] = useState<taskList[]>()
 
   useEffect(()=>{
-    itemsList()
+    const runFile = async () => {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+  
+      if (user) {
+        itemsList();
+      } else {
+        console.error("User not authenticated");
+      }
+    };
+  
+    runFile();
+ 
   },[])
 
-  const itemsList = async()=>{
-    const supabase = await createClient()
-    const{data, error} = await supabase.from("upload").select("*")
+  const itemsList = async () => {
+    const supabase = createClient(); // no need for `await` here
+    const { data, error } = await supabase.from("upload").select("*").eq("user_id", params.id);
+  
     if (data) {
       const parsedData = data.map((doc) => ({
         ...doc,
@@ -36,29 +55,32 @@ const TripDetailsPage = ({ params }: { params: { id: string } }) => {
             : doc.taskDetails,
       }));
   
-      Setlisting(parsedData as details[]);
+      setIslisting(parsedData as taskList[]);
     } else {
       console.log(error);
     }
-
-  }
-
-    return <div className="w-full h-full flex pt-3 px-2 "> 
-    <div className="w-full h-full flex flex-col ">
-      <h1 className="font-semibold ">Trips</h1>
-    <p className="text-muted-foreground text-sm">View and edit Ai generated travel plans</p>
-    </div>
-    <div>
-      {listing?.map((doc)=>(
-        <div key={doc.id} className="font-bold text-black text-2xl">
-            {doc.taskDetails.name}
-            {doc.taskDetails.estimatedPrice}
-
-        </div>
-      ))}
-    </div>
-    </div>;
   };
-  
-  export default TripDetailsPage;
-  
+  return ( 
+
+    <div className="px-2 py-2 flex w-full h-full  flex-col">
+      <h1 className="text-md font-semibold">Tasks</h1>
+      <p className="text-sm text-muted-foreground">View and edit Ai-generated travel Plans</p>
+      <div className="w-full h-full pt-5  flex  items-center">
+        {listings?.map((fl)=>(
+          <div key={fl.id} className=" w-full px-3 flex flex-col h-full justify-center">
+             <h1 className="font-bold text-lg">{fl.taskDetails.name}  </h1>            
+            
+            <div className="w-full text-sm space-x-5 text-muted-foreground pt-3 flex items-center gap-2">
+           <span className="flex">  <FaRegCalendarAlt/> {fl.taskDetails.duration} day plan</span>  
+           <span className="flex">  <FiMapPin />           {fl.taskDetails.location.city} </span>  
+
+            </div>
+          </div>
+          
+        ))}
+      </div>
+    </div>
+   );
+}
+ 
+export default Taski;
