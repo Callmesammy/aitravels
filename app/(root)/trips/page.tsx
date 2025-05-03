@@ -27,7 +27,7 @@ export const formSchema = z.object({
   }),
   duration: z.coerce.number({
     required_error: "Enter number of days to stay"
-  }), 
+  }) , 
   travel: z.string({
     required_error: "select group type"
   }),

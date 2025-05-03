@@ -62,8 +62,8 @@ const Sidebar =  () => {
   }
   
   return (
-    <div className="shadow-md h-full w-[16rem]  pt-2  sticky">
-      <div>
+    <div className="shadow-md h-full w-[16rem]  pt-2  sticky hidden  lg:flex">
+      <div className="">
         <Link
           onClick={() => refreash("/")}
           href={"/"}

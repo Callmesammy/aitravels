@@ -32,7 +32,7 @@ const [use, setUse] = useState()
        </h1>
        <p className="text-sm text-muted-foreground">Track activity, trends, and popular destinationsin real time </p>
        </div> 
-      <Link href={"/trips"}>  <Button variant="link" className="bg-sky-800 text-white cursor-pointer"><Plus/> Create a trip</Button> </Link> 
+      <Link href={"/trips"}>  <Button variant="link" className="hidden lg:flex bg-sky-800 text-white cursor-pointer"><Plus/> Create a trip</Button> </Link> 
       </div>
       <div className=" mt-3 grid md:grid-cols-2 lg:grid-cols-3 w-full lg:h-32 rounded-md h-full  gap-2  items-start  ">
         {addItems.map((item)=>(

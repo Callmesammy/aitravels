@@ -6,7 +6,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
@@ -21,7 +20,17 @@ interface taskList{
       name: string, 
       description: string, 
       estimatedPrice: string, 
-      duration: number 
+      duration: number, 
+
+      itinerary: string[]
+
+      budget: string,
+      country: string,
+      group: string,
+      interest: string,
+      travel: string
+
+
     location:{
       city: string,
     }
@@ -30,25 +39,14 @@ interface taskList{
   user_id: string
 
 }
-const Taski = ({params}: {params: {id: string}}) => {
-console.log(params)
+const Taski = ({params}: {params: {id: number}}) => {
+  console.log(params)
   const [listings, setIslisting] = useState<taskList[]>()
 
   useEffect(()=>{
-    const runFile = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-  
-      if (user) {
+   
         itemsList();
-      } else {
-        console.error("User not authenticated");
-      }
-    };
-  
-    runFile();
+     
  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
@@ -97,15 +95,36 @@ console.log(params)
         {fl.imagUrl.map((doc: string, flx: number)=>(
 
           <CarouselItem key={doc}>
-           <><img key={flx} src={doc} alt="doc" className=" w-full h-[29rem] flex rounded-md" /></>
+           <><img key={flx} src={doc} alt="doc" className=" w-full h-[29rem] flex rounded-md shrink-0" /></>
           </CarouselItem>
         ))}
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    
           </div>
-          <div> another segment</div>
+          <div className=" grid grid-cols-5 w-[40rem] pt-3 gap-3"> 
+            <span className="capitalize bg-gray-300 text-sm items-center rounded text-center">{fl.taskDetails.budget }</span>
+            <span className="capitalize bg-sky-300 text-sm items-center rounded text-center">{fl.taskDetails.country }</span>
+            <span className="capitalize bg-orange-300 text-sm items-center rounded text-center">{fl.taskDetails.group }</span>
+            <span className="capitalize bg-green-300 text-sm items-center rounded text-center">{fl.taskDetails.interest }</span>
+            <span className="capitalize bg-purple-300 text-sm items-center rounded text-center">{fl.taskDetails.travel}</span>
+
+
+          </div>
+          <div className="flex flex-col w-full  pt-3">
+            <span className="items-start w-full pl-[4.4rem]">{fl.taskDetails.duration} Day {fl.taskDetails.location.city}</span>
+            <span className="text-muted-foreground pl-[4.4rem] "> {fl.taskDetails.estimatedPrice}</span>
+         
+            <div className="flex flex-col w-full items-center pt-3">
+            <p className="text-sm pl-[4.4rem] "> {fl.taskDetails.description}</p>
+          </div>
+          <div className="flex flex-col w-full items-center pt-3">
+
+
+          </div>
+          </div>
           </div>
           
         ))}
