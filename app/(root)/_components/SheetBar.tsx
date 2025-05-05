@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { FcGlobe } from "react-icons/fc"
 import { GoSidebarExpand } from "react-icons/go";
 import { MdDashboardCustomize } from "react-icons/md"
@@ -22,6 +22,7 @@ import { CiMap } from "react-icons/ci"
 import { cn } from "@/lib/utils"
 import { Plus } from "lucide-react"
 import { useState } from "react"
+import { createClient } from "@/utils/supabase/client"
 
 
 const additems = [
@@ -35,6 +36,12 @@ const additems = [
     },
   ];
 export function SheetBar() {
+    const router = useRouter()
+    const logout = async ()=>{
+        const supabase = await createClient()
+        await supabase.auth.signOut()
+       router.push("/login")
+      }
     const [onClose, setOnClose] = useState(false)
     const pathname = usePathname()
 
@@ -62,7 +69,8 @@ export function SheetBar() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle> </SheetTitle>
+          <SheetTitle>           <Button onClick={logout} variant="destructive" className="cursor-pointer">Logout</Button>
+          </SheetTitle>
           <SheetDescription className="pt-6 justify-center w-full">
           </SheetDescription>
         </SheetHeader>
@@ -70,7 +78,6 @@ export function SheetBar() {
           {additems.map((dc) => {
             const isActive = pathname == dc.url || pathname.startsWith(`${dc.url}/`);
             return (
-                
               <Link
                 href={dc.url}
                 key={dc.id}

@@ -1,29 +1,65 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { ArrowDown, ArrowUp, MapPin, Plus } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdOutlineWavingHand } from "react-icons/md";
-import { addItems, addtravels } from "./_components";
-import Image from "next/image";
 import Link from "next/link";
+import { addItems } from "./_components";
 
+
+interface mainTrips{
+  user_id: string,
+    imagUrl: string, 
+
+  taskDetails: {
+    budget: string, 
+  country: string, 
+  interest: string,
+    name: string, 
+    travel: string,
+  }
+}
 const Home = () =>{
+  const router = useRouter()
 const [use, setUse] = useState()
+const [addtravels, setAddtravels] = useState<mainTrips[]>()
   useEffect(()=>{
     loginData()
+    viewCountries()
   },[])
   const loginData =async()=>{
     const supabase = await createClient()
     const { data: { user }, } = await supabase.auth.getUser()
           if(!user){
-            redirect("/login")
+            router.push("/login")
            }else{
             setUse(user.user_metadata.full_name)
-           }
+           }}
+           const viewCountries = async()=>{
+            const supabase = await createClient()
+            const {data, error} = await supabase.from("upload").select("*")
+            if(data){
+            const docParse = data.map((trt)=>({
+              ...trt,
+              taskDetails:
+              typeof trt.taskDetails === "string"
+              ? JSON.parse(trt.taskDetails)
+              : trt.taslDetails,
 
-}
+              imagUrl: 
+              typeof trt.imagUrl === "string"
+              ? JSON.parse(trt.imagUrl)
+              : trt.imagUrl
+            
+            }))              
+            setAddtravels(docParse)
+            }else{
+              console.log("Something went wrong", error)
+            }
+           }
   return (
     <div className="flex h-full w-full px-2 pt-2 flex-col overflow-auto mb-2 ">
       <div className="justify-between w-full flex items-start">
@@ -46,22 +82,22 @@ const [use, setUse] = useState()
       <div className="pt-5 flex flex-col w-full h-full ">
       <h1 className="text-md font-bold">Trips</h1>
       <div className="grid md:grid-cols-2  lg:grid-cols-4 w-full h-full gap-2">
-          {addtravels.map((addT)=>{
-
+          {addtravels?.map((addT)=>{
             return(
-            <Link href={`/trips/${addT.id}`} key={addT.id} className="border hover:scale-105 flex flex-col rounded-md w-full h-[16rem]">
+            <Link href={`/trips/${addT.user_id}`} key={addT.user_id} className="border hover:scale-105 flex flex-col rounded-md w-full h-[16rem]">
               <div className="w-full h-[10rem] border rounded-t-md relative">
-                <Image src={addT.img} alt="image" fill className="object-fill rounded-t-md"/>
-                <div className="rounded end-2 mt-2 absolute px-3  bg-white text-black text-center text-sm items-center flex font-semibold">$ {addT.amount}</div>
+                
+                <img src={addT.imagUrl} alt="image"  className="object-cover rounded-t-md w-[18rem] h-full relative"/>
+                <div className="rounded end-2 mt-2 absolute px-3  bg-white text-black text-center text-sm items-center flex font-semibold">$ </div>
               </div>
-              <div className="px-2 pt-1 font-semibold text-purple-950">{addT.place}</div>
-              <span className="text-sm px-2 pt-2 text-muted-foreground flex gap-1 items-center"><MapPin className="size-5"/> {addT.map}</span>
+              <div className="px-2 pt-1 font-semibold text-purple-950">{addT.taskDetails.country}</div>
+              <span className="text-sm px-2 pt-2 text-muted-foreground flex gap-1 items-center"><MapPin className="size-5"/> {addT.taskDetails.travel}</span>
               <span className="text-sm px-2  flex gap-1 items-center">
               <span className="text-sm px-2 bg-green-200 rounded-lg text-center mt-2 text-muted-foreground flex gap-1 items-center">
-                {addT.tour}
+                {addT.taskDetails.interest}
                 </span>
                 <span className="text-sm px-2 bg-purple-200 rounded-lg text-center mt-2 text-muted-foreground flex gap-1 items-center">
-                {addT.features}
+                {addT.taskDetails.budget}
                 </span>
                </span>
 

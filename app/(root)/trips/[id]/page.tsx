@@ -17,12 +17,13 @@ import {
 interface taskList{
   imagUrl: string[],
   taskDetails:{
+    bestTimeToVisit: string, //nt
       name: string, 
       description: string, 
       estimatedPrice: string, 
       duration: number, 
 
-      itinerary: string[]
+      itinerary: {[key: string]: string,}
 
       budget: string,
       country: string,
@@ -76,21 +77,20 @@ const Taski = ({params}: {params: {id: number}}) => {
   };
   return ( 
 
-    <div className="px-2 py-2 flex w-full h-full  flex-col overflow-auto">
+    <div className="px-2 py-2 flex  w-ful h-full  flex-col  mb-2 overflow-auto">
       <h1 className="text-md font-semibold">Tasks</h1>
       <p className="text-sm text-muted-foreground">View and edit Ai-generated travel Plans</p>
-      <div className="w-full h-full pt-5  flex  items-center">
+      <div className="md:w-full md:h-full pt-5  flex  items-center overflow-auto  mb-3">
         {listings?.map((fl)=>(
-          <div key={fl.id} className=" w-full px-3 flex flex-col h-full items-center justify-center">
+          <div key={fl.id} className=" w-full px-3 flex flex-col h-full items-center justify-center ">
              <h1 className="font-bold text-lg">{fl.taskDetails.name}  </h1>            
-            
-            <div className=" text-sm text-center w-full  text-muted-foreground justify-center pt-3 flex items-center ">
+            <div className=" text-sm text-center w-ful mt-3  text-muted-foreground justify-center pt-3 flex items-center ">
            <span className="flex items-center gap-2 w-42 ">  <FaRegCalendarAlt/> {fl.taskDetails.duration} day plan</span>  
-           <span className="flex tems-center gap-2 ">  <FiMapPin /> {fl.taskDetails.location.city} </span>  
+           <span className="flex tems-center gap-2 w-full">  <FiMapPin /> {fl.taskDetails.location.city} </span>  
 
             </div>
             <div className="w-[] h-[30rem] gap-2  flex ">
-            <Carousel className="w-xl items-center flex justify-center">
+            <Carousel className="w-sm md:w-xl items-center flex justify-center">
       <CarouselContent>
         {fl.imagUrl.map((doc: string, flx: number)=>(
 
@@ -104,27 +104,32 @@ const Taski = ({params}: {params: {id: number}}) => {
     </Carousel>
     
           </div>
-          <div className=" grid grid-cols-5 w-[40rem] pt-3 gap-3"> 
-            <span className="capitalize bg-gray-300 text-sm items-center rounded text-center">{fl.taskDetails.budget }</span>
-            <span className="capitalize bg-sky-300 text-sm items-center rounded text-center">{fl.taskDetails.country }</span>
-            <span className="capitalize bg-orange-300 text-sm items-center rounded text-center">{fl.taskDetails.group }</span>
-            <span className="capitalize bg-green-300 text-sm items-center rounded text-center">{fl.taskDetails.interest }</span>
-            <span className="capitalize bg-purple-300 text-sm items-center rounded text-center">{fl.taskDetails.travel}</span>
+          <ul className=" flex gap-2 p-4 items-start "> 
+            <li className="capitalize bg-gray-300 text-sm items-center rounded text-center">{fl.taskDetails.budget }</li>
+            <li className="capitalize bg-sky-300 text-sm items-center rounded text-center">{fl.taskDetails.country }</li>
+            <li className="capitalize bg-orange-300 text-sm items-center rounded text-center">{fl.taskDetails.group }</li>
+            <li className="capitalize bg-green-300 text-sm items-center rounded text-center">{fl.taskDetails.interest }</li>
+            <li className="capitalize bg-purple-300 text-sm items-center rounded text-center">{fl.taskDetails.travel}</li>
 
 
-          </div>
-          <div className="flex flex-col w-full  pt-3">
-            <span className="items-start w-full pl-[4.4rem]">{fl.taskDetails.duration} Day {fl.taskDetails.location.city}</span>
-            <span className="text-muted-foreground pl-[4.4rem] "> {fl.taskDetails.estimatedPrice}</span>
+          </ul>
+          <div className="flex flex-col w-full  pt-3 justify-center ">
+            <span className="items-start w-full ">{fl.taskDetails.duration} Day {fl.taskDetails.location.city}</span>
+            <span className="text-muted-foreground ] "> {fl.taskDetails.estimatedPrice}</span>
          
-            <div className="flex flex-col w-full items-center pt-3">
-            <p className="text-sm pl-[4.4rem] "> {fl.taskDetails.description}</p>
-          </div>
-          <div className="flex flex-col w-full items-center pt-3">
+            <div className="flex flex-col w-full items-center pt-3 h-full">
+            <p className="text-md text-pretty "> {fl.taskDetails.description}</p>
 
 
           </div>
+          <p>{Object.entries(fl.taskDetails.itinerary).map(([day, dl])=>(
+            <div key={day}>
+              <strong>{day}</strong>: {dl}
+
+            </div>
+          ))}</p>
           </div>
+          
           </div>
           
         ))}

@@ -23,7 +23,7 @@ export const addItems = [
     },
 ]
 
-export const addtravels = [
+export const addtrddeavels = [
     {
         id: 1, 
         amount: 250,

@@ -63,7 +63,7 @@ const Sidebar =  () => {
   
   return (
     <div className="shadow-md h-full w-[16rem]  pt-2  sticky hidden  lg:flex">
-      <div className="">
+      <div className=" flex flex-col w-full h-full">
         <Link
           onClick={() => refreash("/")}
           href={"/"}
@@ -94,10 +94,10 @@ const Sidebar =  () => {
             );
           })}
         </div>
-      </div>
+
         <Dialog  >
             <DialogTrigger asChild>
-         <div className="h-full cursor-pointer gap-1 mt-auto hover:scale-95 flex -bottom-[20rem] px-2 text-sm items-center absolute font-semibold">
+         <div className=" cursor-pointer gap-1 mt-auto hover:scale-95 flex  px-2 text-sm items-center  font-semibold">
        {imagee && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={imagee} alt="image" className="w-8 h-8 flex rounded-full"/>
@@ -120,6 +120,8 @@ const Sidebar =  () => {
       </DialogContent>
         </Dialog>
      
+      </div>
+      
       
     </div>
   );
