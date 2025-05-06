@@ -87,8 +87,8 @@ const [addtravels, setAddtravels] = useState<mainTrips[]>()
             <Link href={`/trips/${addT.user_id}`} key={addT.user_id} className="border hover:scale-105 flex flex-col rounded-md w-full h-[16rem]">
               <div className="w-full h-[10rem] border rounded-t-md relative">
                 
-                <img src={addT.imagUrl} alt="image"  className="object-cover rounded-t-md w-[18rem] h-full relative"/>
-                <div className="rounded end-2 mt-2 absolute px-3  bg-white text-black text-center text-sm items-center flex font-semibold">$ </div>
+                <img src={addT.imagUrl} alt="image"  className="object-cover rounded-t-md w-full h-full relative"/>
+                <div className="rounded end-2 mt-2 absolute px-3  bg-white text-black text-center text-sm items-center flex font-semibold"> </div>
               </div>
               <div className="px-2 pt-1 font-semibold text-purple-950">{addT.taskDetails.country}</div>
               <span className="text-sm px-2 pt-2 text-muted-foreground flex gap-1 items-center"><MapPin className="size-5"/> {addT.taskDetails.travel}</span>
