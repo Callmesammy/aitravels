@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useParams } from "next/navigation";
 
 interface taskList {
   imagUrl: string[];
@@ -33,7 +34,8 @@ interface taskList {
   user_id: string;
 }
 
-const Taski = ({ params }: { params: { id: string } }) => {
+const Taski = () => {
+  const params = useParams()
   const [listings, setIslisting] = useState<taskList[]>();
 
   useEffect(() => {
