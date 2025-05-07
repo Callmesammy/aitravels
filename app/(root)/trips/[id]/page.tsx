@@ -33,7 +33,7 @@ interface taskList {
   user_id: string;
 }
 
-const Taski = ({ params }: { params: { id: number } }) => {
+const Taski = ({ params }: { params: { id: string } }) => {
   const [listings, setIslisting] = useState<taskList[]>();
 
   useEffect(() => {
@@ -45,8 +45,8 @@ const Taski = ({ params }: { params: { id: number } }) => {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("upload")
-      .select("*")
-      .eq("user_id", params.id);
+      .select("id, user_id, imagUrl, taskDetails")
+      .eq("id", Number(params.id));
 
     if (data) {
       const parsedData = data.map((doc) => ({

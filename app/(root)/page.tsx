@@ -29,6 +29,7 @@ const [addtravels, setAddtravels] = useState<mainTrips[]>()
   useEffect(()=>{
     loginData()
     viewCountries()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   const loginData =async()=>{
     const supabase = await createClient()

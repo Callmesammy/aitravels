@@ -79,7 +79,7 @@ const imgData = await imgRes.json();
     const {data, error} = await supabase.from("upload").insert({
       taskDetails: json, 
       imagUrl: image
-    }).select("user_id").single()
+    }).select("id").single()
     if(data){
       console.log(data)
     }else{
@@ -88,7 +88,7 @@ const imgData = await imgRes.json();
     return {
       ...json,
       image,
-      id: data?.user_id
+      id: data?.id
     };
   } catch (error) {
     console.error("AI itinerary error:", error);
