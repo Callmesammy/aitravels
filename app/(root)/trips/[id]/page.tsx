@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useParams } from "next/navigation";
 
 interface taskList {
   imagUrl: string[];
@@ -33,12 +34,14 @@ interface taskList {
   user_id: string;
 }
 
-const Taski = ({ params }: { params: { id: number } }) => {
-  console.log(params)
+const Taski = () => {
+
+  const {id} = useParams()
   const [listings, setIslisting] = useState<taskList[]>();
 
   useEffect(() => {
     itemsList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const itemsList = async () => {
@@ -46,7 +49,7 @@ const Taski = ({ params }: { params: { id: number } }) => {
     const { data, error } = await supabase
       .from("upload")
       .select("*")
-      .eq("id", params.id);
+      .eq("id", id);
 
     if (data) {
       const parsedData = data.map((doc) => ({
