@@ -31,7 +31,6 @@ interface taskList {
     location: { city: string };
   };
   id: number;
-  user_id: string;
 }
 
 const Taski = () => {
