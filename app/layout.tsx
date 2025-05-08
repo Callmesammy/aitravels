@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "LetsTour",
   description: "Travel all over the world",
+  icons:{
+    icon: "/4.avif"
+  }
 };
 
 export default function RootLayout({

@@ -61,8 +61,12 @@ const [addtravels, setAddtravels] = useState<mainTrips[]>()
               console.log("Something went wrong", error)
             }
            }
+           console.log("URL:", process.env.NEXT_PUBLIC_SUPABASE_URL)
+console.log("KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
   return (
     <div className="flex h-full w-full px-2 pt-2 flex-col overflow-auto mb-2 ">
+     
       <div className="justify-between w-full flex items-start">
       <div className="flex flex-col">
        <h1 className="text-md font-semibold flex items-center gap-1 capitalize">Welcome {use} <MdOutlineWavingHand />
