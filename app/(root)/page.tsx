@@ -11,7 +11,7 @@ import { addItems } from "./_components";
 
 
 interface mainTrips{
-  user_id: string,
+  id: string,
     imagUrl: string, 
 
   taskDetails: {
@@ -85,7 +85,7 @@ const [addtravels, setAddtravels] = useState<mainTrips[]>()
       <div className="grid md:grid-cols-2  lg:grid-cols-4 w-full h-full gap-2">
           {addtravels?.map((addT)=>{
             return(
-            <Link href={`/trips/${addT.user_id}`} key={addT.user_id} className="border hover:scale-105 flex flex-col rounded-md w-full h-[16rem]">
+            <Link href={`/trips/${addT.id}`} key={addT.id} className="border hover:scale-105 flex flex-col rounded-md w-full h-[16rem]">
               <div className="w-full h-[10rem] border rounded-t-md relative">
                 
                 <img src={addT.imagUrl} alt="image"  className="object-cover rounded-t-md w-full h-full relative"/>
