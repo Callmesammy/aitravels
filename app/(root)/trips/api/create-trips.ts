@@ -1,8 +1,8 @@
 "use server"
 import { z } from "zod";
-import { formSchema } from "../trips/page";
 import { GoogleGenAI } from "@google/genai";
 import { createClient } from "@/utils/supabase/server";
+import { formSchema } from "@/lib/validation/trips";
 
 export const action = async (formdata: z.infer<typeof formSchema>) => {
   const dat = {
