@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/client";
 import { ArrowDown, ArrowUp, MapPin, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdOutlineWavingHand } from "react-icons/md";
 import Link from "next/link";
 import { addItems } from "./_components";
+import { createClient } from "@/utils/supabase/client";
 
 
 interface mainTrips{
