@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "LetsTour",
   description: "Travel all over the world",
   icons:{
-    icon: "/4.avif"
+    icon: "/1.jpg"
   }
 };
 
